@@ -20,6 +20,7 @@ const verifyToken = require("./middlewares/verifyToken");
 const User = require("./models/user");
 const Stock = require("./models/stock");
 const StockPBE = require("./models/stockPBE");
+const Cart = require("./models/cart");
 
 // Rota de registro de Estoque
 app.post("/api/stock", verifyToken, async (req, res) => {
@@ -129,15 +130,15 @@ app.post("/api/login", async (req, res) => {
     return res.status(401).json({ message: "Senha incorreta" });
   }
 
+  // Função para gerar o token JWT
+  function generateToken(user) {
+    return jwt.sign({ userId: user._id, group: user.group }, chaveSecreta, {
+      expiresIn: "1h",
+    });
+  }
+
   res.json({ token: generateToken(user), group: user.group });
 });
-
-// Função para gerar o token JWT
-function generateToken(user) {
-  return jwt.sign({ userId: user._id, group: user.group }, chaveSecreta, {
-    expiresIn: "1h",
-  });
-}
 
 // Rota de listagem de usuários
 app.get("/api/accounts", verifyToken, async (req, res) => {
@@ -186,6 +187,40 @@ app.get("/api/user/group", (req, res) => {
       res.json({ group: userGroup });
     }
   });
+});
+
+// Rota para adicionar um item ao carrinho
+
+app.post("/api/cart", async (req, res) => {
+  const { userId, itemId, quantity, price } = req.body;
+
+  try {
+    const carrinhoItem = new Cart({
+      userId: userId,
+      itemId: itemId,
+      price: price,
+      quantity: quantity,
+    });
+
+    await carrinhoItem.save();
+    res.status(200).json(carrinhoItem);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Ocorreu um erro ao adicionar o item ao carrinho" });
+  }
+});
+
+// Rota para obter o carrinho de um usuário por ID
+app.get("/api/cart/:userId", async (req, res) => {
+  const userId = req.query.userId;
+
+  try {
+    const cart = await Cart.find({ userId: userId }).populate("itemId");
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json({ error: "Ocorreu um erro ao obter o carrinho" });
+  }
 });
 
 // Iniciar o servidor
