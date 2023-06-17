@@ -16,6 +16,8 @@ import { RecuperNomeComponent } from './pages/recuper-nome/recuper-nome.componen
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PopupComponent } from './popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +32,15 @@ import { CartComponent } from './pages/cart/cart.component';
     RecuperNomeComponent,
     RegisterComponent,
     LoginComponent,
-    CartComponent
+    CartComponent,
+    PopupComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
   ],
