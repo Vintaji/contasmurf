@@ -17,7 +17,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PopupComponent } from './popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { PopupComponent } from './popup/popup.component';
     RegisterComponent,
     LoginComponent,
     CartComponent,
-    PopupComponent,
   ],
   imports: [
     BrowserModule,
