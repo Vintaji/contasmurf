@@ -137,7 +137,7 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  res.json({ token: generateToken(user), group: user.group });
+  res.json({ userId: user._id, token: generateToken(user), group: user.group });
 });
 
 // Rota de listagem de usuários
@@ -192,18 +192,20 @@ app.get("/api/user/group", (req, res) => {
 // Rota para adicionar um item ao carrinho
 
 app.post("/api/cart", async (req, res) => {
-  const { userId, itemId, quantity, price } = req.body;
+  const { userId, itemId, quantity, price, name, imageUrl } = req.body;
 
   try {
-    const carrinhoItem = new Cart({
+    const cartItem = new Cart({
       userId: userId,
       itemId: itemId,
       price: price,
+      name: name,
       quantity: quantity,
+      imageUrl: "https://via.placeholder.com/150",
     });
 
-    await carrinhoItem.save();
-    res.status(200).json(carrinhoItem);
+    await cartItem.save();
+    res.status(200).json(cartItem);
   } catch (error) {
     res
       .status(500)
@@ -211,8 +213,7 @@ app.post("/api/cart", async (req, res) => {
   }
 });
 
-// Rota para obter o carrinho de um usuário por ID
-app.get("/api/cart/:userId", async (req, res) => {
+app.get("/api/cart", verifyToken, async (req, res) => {
   const userId = req.query.userId;
 
   try {
@@ -220,6 +221,20 @@ app.get("/api/cart/:userId", async (req, res) => {
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ error: "Ocorreu um erro ao obter o carrinho" });
+  }
+});
+
+app.delete("/api/cart/:userId/:itemId", async (req, res) => {
+  const userId = req.params.userId;
+  const itemId = req.params.itemId;
+
+  try {
+    await Cart.deleteOne({ userId: userId, itemId: itemId });
+    res.status(200).json({ message: "Item removido do carrinho com sucesso" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Ocorreu um erro ao remover o item do carrinho" });
   }
 });
 

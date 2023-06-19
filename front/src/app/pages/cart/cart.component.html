@@ -1,47 +1,35 @@
-<!-- component -->
-<!-- Create By Joker Banny -->
-<style>
-    @layer utilities {
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  }
-</style>
-
-<body>
-  <div class="h-screen bg-gray-100 pt-20">
-    <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
-    <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-      <div class="rounded-lg md:w-2/3">
-        <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-          <img src="../../../assets/png/logo.png" alt="product-image" class="w-full rounded-lg sm:w-40" />
-          <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-            <div class="mt-5 sm:mt-0">
-              <h2 class="text-lg font-bold text-gray-900">Conta Unraked - LVL 30</h2>
-              <p class="mt-1 text-xs text-gray-700">R$ 10</p>
+<!-- cart.component.html -->
+<div class="h-screen bg-gray-100 pt-20">
+  <h1 class="mb-10 text-center text-2xl font-bold">Carrinho</h1>
+  <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+    <div class="rounded-lg md:w-2/3" *ngFor="let item of cartItems">
+      <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+        <img [src]="item.imageUrl" alt="product-image" class="w-full h-40 rounded-lg sm:w-40" />
+        <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+          <div class="mt-5 sm:mt-0">
+            <h2 class="text-lg font-bold text-gray-900">{{ item.name }}</h2>
+            <p class="mt-1 text-xs text-gray-700">R$ {{ item.price }}</p>
+          </div>
+          <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+            <div class="flex items-center border-gray-100">
+              <span class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" (click)="decreaseQuantity(item)"> - </span>
+              <input class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" [(ngModel)]="item.quantity" min="1" max="10" />
+              <span class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" (click)="increaseQuantity(item)"> + </span>
             </div>
-            <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-              <div class="flex items-center border-gray-100">
-                <span class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
-                <input class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value="1" min="1" />
-                <span class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
-              </div>
-            </div>
+            <button class="cursor-pointer rounded bg-red-500 py-1 px-3 text-white hover:bg-red-600" (click)="removeItem(item)">Remover</button>
           </div>
         </div>
-      </div>
-      <!-- Sub total -->
-      <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
-        <div class="flex justify-between">
-          <p class="text-lg font-bold">Total</p>
-          <div class="">
-            <p class="mb-1 text-lg font-bold">$134.98 BRL</p>
-          </div>
-        </div>
-        <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Finalizar</button>
       </div>
     </div>
+    <!-- Sub total -->
+    <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+      <div class="flex justify-between">
+        <p class="text-lg font-bold">Total</p>
+        <div class="">
+          <p class="mb-1 text-lg font-bold">R$ {{ getTotalPrice() }}</p>
+        </div>
+      </div>
+      <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600" (click)="checkout()">Finalizar</button>
+    </div>
   </div>
-</body>
+</div>
