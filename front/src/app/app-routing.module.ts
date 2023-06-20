@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, NavigationExtras } from '@angular/router';
 import { AuthGuard } from '../app/auth.guard';
-
 import { AdminComponent } from './pages/admin/admin.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -28,25 +27,16 @@ const routes: Routes = [
     path: 'cart',
     component: CartComponent,
     canActivate: [AuthGuard],
-    data: {
-      allowedRoles: ['user']
-    }
   },
   {
     path: 'dashboard',
     component: AdminComponent,
     canActivate: [AuthGuard],
-    data: {
-      allowedRoles: ['admin']
-    }
   },
   {
     path: 'user',
     component: UserComponent,
     canActivate: [AuthGuard],
-    data: {
-      allowedRoles: ['user']
-    }
   },
   {
     path: 'recuperarnome',

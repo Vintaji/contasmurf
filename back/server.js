@@ -105,7 +105,6 @@ app.post("/api/register", async (req, res) => {
     username,
     email,
     password: hashedPassword,
-    group: "user",
   });
   await newUser.save();
 
@@ -132,12 +131,12 @@ app.post("/api/login", async (req, res) => {
 
   // Função para gerar o token JWT
   function generateToken(user) {
-    return jwt.sign({ userId: user._id, group: user.group }, chaveSecreta, {
+    return jwt.sign({ userId: user._id }, chaveSecreta, {
       expiresIn: "1h",
     });
   }
 
-  res.json({ userId: user._id, token: generateToken(user), group: user.group });
+  res.json({ userId: user._id, token: generateToken(user) });
 });
 
 // Rota de listagem de usuários
@@ -170,38 +169,17 @@ app.post("/api/recuperarnome", (req, res) => {
     });
 });
 
-app.get("/api/user/group", (req, res) => {
-  // Obtenha o token de autorização do cabeçalho da solicitação
-  const token = req.headers.authorization;
-
-  // Verifique se o token é válido
-  jwt.verify(token, chaveSecreta, (err, decoded) => {
-    if (err) {
-      // O token é inválido ou expirou, retorne um erro
-      res.status(401).json({ error: "Token inválido" });
-    } else {
-      // O token é válido, extraia o grupo do usuário do token decodificado
-      const userGroup = decoded.group;
-
-      // Retorne o grupo do usuário como resposta
-      res.json({ group: userGroup });
-    }
-  });
-});
-
 // Rota para adicionar um item ao carrinho
 
-app.post("/api/cart", async (req, res) => {
-  const { userId, itemId, quantity, price, name, imageUrl } = req.body;
+app.post("/api/cart", verifyToken, async (req, res) => {
+  const { userId, quantity, price, name } = req.body;
 
   try {
     const cartItem = new Cart({
       userId: userId,
-      itemId: itemId,
       price: price,
       name: name,
       quantity: quantity,
-      imageUrl: "https://via.placeholder.com/150",
     });
 
     await cartItem.save();
@@ -215,26 +193,54 @@ app.post("/api/cart", async (req, res) => {
 
 app.get("/api/cart", verifyToken, async (req, res) => {
   const userId = req.query.userId;
+  const itemId = req.query.itemId;
 
   try {
-    const cart = await Cart.find({ userId: userId }).populate("itemId");
+    const cart = await Cart.findOne({ userId: userId, _id: itemId });
+    if (!cart) {
+      res.status(404).json({ message: "Esse itemId não foi encontrado" });
+      return;
+    }
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Ocorreu um erro ao obter o carrinho" });
+    res
+      .status(500)
+      .json({ error: "Ocorreu um erro ao obter os itens do carrinho" });
   }
 });
 
-app.delete("/api/cart/:userId/:itemId", async (req, res) => {
-  const userId = req.params.userId;
-  const itemId = req.params.itemId;
+app.delete("/api/cart", verifyToken, async (req, res) => {
+  const userId = req.query.userId;
+  const itemId = req.query.itemId;
 
   try {
-    await Cart.deleteOne({ userId: userId, itemId: itemId });
+    const result = await Cart.deleteOne({ userId: userId, _id: itemId });
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: "Esse itemId não foi encontrado" });
+      return;
+    }
     res.status(200).json({ message: "Item removido do carrinho com sucesso" });
   } catch (error) {
     res
       .status(500)
       .json({ error: "Ocorreu um erro ao remover o item do carrinho" });
+  }
+});
+
+app.get("/api/cartlist", verifyToken, async (req, res) => {
+  try {
+    const cartList = await Cart.find();
+    if (cartList.length === 0) {
+      res
+        .status(404)
+        .json({ message: "Nenhum item no carrinho foi encontrado" });
+      return;
+    }
+    res.send(cartList);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Ocorreu um erro ao obter a lista do carrinho" });
   }
 });
 

@@ -18,7 +18,7 @@
                     - 3 Reembolsos disponíveis;<br>
                     - Possui EA's suficiente para você comprar seus campeões favoritos e colocar o nickname que desejar;
                     <br><br>
-                    <button class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
+                    <button (click)="adicionarAoCarrinho()" class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
                         COMPRAR
                     </button>
                 </p>
@@ -44,7 +44,7 @@
                     - 3 Reembolsos disponíveis;<br>
                     - Possui EA's suficiente para você comprar seus campeões favoritos e colocar o nickname que desejar;
                     <br/><br/>
-                    <button class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
+                    <button (click)="adicionarAoCarrinhoAssinatura()" class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
                         COMPRAR
                     </button>
                 </p>
@@ -67,8 +67,9 @@
                     Faremos na seguinte ordem: com essências azuis (fazendo possíveis reembolsos), com RP (fazendo possíveis reembolsos), caso não hajam fundos na conta  para realizar a mudança após essas tentativas é necessário o envio de um código de ativação pré-pago de RP.<br><br>
                     Caso não deseje pagar pelo método com RP, te devolveremos o dinheiro.
                     <br/><br/>
-                    <button class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
-                        <a routerLink="/recuperarnome">COMPRAR</a>
+                    <button (click)="adicionarAoCarrinhoTrocarNome()" class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
+                        COMPRAR
+                        <!-- <a routerLink="/recuperarnome">COMPRAR</a> -->
                     </button>
                 </p>
             </div>
@@ -93,8 +94,8 @@
                     A conta que fornecemos é permanente, o que significa que você pode usá-la para sempre.<br>
                     Por favor, note que as contas PBE são apenas para o servidor PBE Oficial!
                     <br/><br/>
-                    <button class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
-                        <a routerLink="/recuperarnome">COMPRAR</a>
+                    <button (click)="adicionarAoCarrinhoPBE()" class="rounded-2xl h-10 w-32 bg-[#D75433] font-bold text-lg text-white overflow-hidden">
+                        COMPRAR
                     </button>
                 </p>
             </div>

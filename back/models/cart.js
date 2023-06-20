@@ -2,10 +2,10 @@ const mongoose = require("../database/index.js");
 
 // Definição do modelo do usuário
 const CartSchema = new mongoose.Schema({
-  userId: {
+  name: {
     type: String,
   },
-  itemId: {
+  userId: {
     type: String,
   },
   quantity: {

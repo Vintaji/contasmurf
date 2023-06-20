@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ApiService } from '../../api.service';
+import { of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 interface CartItem {
   userId: string;
   name: string;
   itemId: string;
   price: number;
-  imageUrl: string;
   quantity: number;
 }
 
@@ -19,55 +19,39 @@ interface CartItem {
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   userId: string = '';
-  token: string = '';
-  
-  constructor(private http: HttpClient, private router: Router) {}
+  itemId: string = '';
+  token: string | null | undefined;
+
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.getUserData();
+    this.userId = localStorage.getItem('userId') || '';
+    this.itemId = localStorage.getItem('itemId') || '';
+    this.token = this.apiService.getToken(); // Obtém o token do serviço
     this.getCartItems();
   }
-  
-  getUserData() {
-    this.userId = localStorage.getItem('userId') ?? '';
-    this.token = localStorage.getItem('token') ?? '';
-  }
-  
 
-  getCartItems() {
-    const headers = new HttpHeaders().set('Authorization', this.token);
-
-    this.http.get<CartItem[]>(`http://localhost:3000/api/cart?userId=${this.userId}`, { headers }).subscribe(
-      (response) => {
+  getCartItems(): void {
+    this.apiService.getCartItems(this.userId, this.itemId).pipe(
+      tap((response: any) => {
         this.cartItems = response;
-      },
-      (error) => {
+      }),
+      catchError((error: any) => {
         console.log('Ocorreu um erro ao obter os itens do carrinho:', error);
-      }
-    );
-  }
+        return of(null);
+      })
+    ).subscribe();
+  }  
 
-  decreaseQuantity(item: CartItem) {
-    if (item.quantity > 1) {
-      item.quantity--;
-    }
-  }
-
-  increaseQuantity(item: CartItem) {
-    item.quantity++;
-  }
-
-  getTotalPrice() {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  }
-
-  removeItem(item: CartItem) {
-    const headers = new HttpHeaders().set('Authorization', this.token);
-
-    this.http.delete(`http://localhost:3000/api/cart/${this.userId}/${item.itemId}`, { headers }).subscribe(
+  removeItem(item: CartItem): void {
+    this.apiService.removeCartItem(item.userId, item.itemId).subscribe(
       () => {
-        // Removendo o item localmente
-        this.cartItems = this.cartItems.filter((cartItem) => cartItem.itemId !== item.itemId);
+        console.log('Item removido do carrinho');
+        // Remova o item localmente da lista de carrinho, se necessário
+        const index = this.cartItems.indexOf(item);
+        if (index > -1) {
+          this.cartItems.splice(index, 1);
+        }
       },
       (error) => {
         console.log('Ocorreu um erro ao remover o item do carrinho:', error);
@@ -75,11 +59,45 @@ export class CartComponent implements OnInit {
     );
   }
 
-  checkout() {
-    // Realizar o checkout (finalizar a compra)
-    // Implemente a lógica de finalização da compra de acordo com as necessidades do seu aplicativo
-    // Você pode fazer uma requisição HTTP para um endpoint de checkout ou realizar outras ações aqui
-    // Após a finalização da compra, você pode redirecionar o usuário para uma página de confirmação
-    this.router.navigate(['/checkout']);
+  decreaseQuantity(item: CartItem): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.apiService.addToCart(item).subscribe(
+        (response: any) => {
+          console.log('Item do carrinho atualizado:', response);
+          // Atualize a exibição do carrinho, se necessário
+        },
+        (error: any) => {
+          console.log('Ocorreu um erro ao atualizar o item do carrinho:', error);
+        }
+      );
+    }
+  }
+  
+  increaseQuantity(item: CartItem): void {
+    if (item.quantity < 10) {
+      item.quantity++;
+      this.apiService.addToCart(item).subscribe(
+        (response: any) => {
+          console.log('Item do carrinho atualizado:', response);
+          // Atualize a exibição do carrinho, se necessário
+        },
+        (error: any) => {
+          console.log('Ocorreu um erro ao atualizar o item do carrinho:', error);
+        }
+      );
+    }
+  }
+
+  getTotalPrice(): string {
+    let total = 0;
+    for (const item of this.cartItems) {
+      total += item.price * item.quantity;
+    }
+    return total.toFixed(2);
+  }
+
+  checkout(): void {
+    // Lógica para finalizar a compra
   }
 }
