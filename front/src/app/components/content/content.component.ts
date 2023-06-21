@@ -12,7 +12,7 @@ export class ContentComponent {
   adicionarAoCarrinho() {
     const item = {
       userId: localStorage.getItem('userId') || '',
-      name: 'Conta Unraked - LVL 30',
+      name: 'Conta Unraked',
       itemId: '', // O campo itemId será preenchido pelo serviço ApiService
       price: 10,
       quantity: 1
@@ -32,7 +32,7 @@ export class ContentComponent {
       userId: localStorage.getItem('userId') || '',
       name: 'Conta PBE',
       itemId: '', // O campo itemId será preenchido pelo serviço ApiService
-      price: 10,
+      price: 50,
       quantity: 1
     };
   

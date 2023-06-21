@@ -183,7 +183,15 @@ app.post("/api/cart", verifyToken, async (req, res) => {
     });
 
     await cartItem.save();
-    res.status(200).json(cartItem);
+
+    const itemId = cartItem._id; // Obtém o _id gerado pelo MongoDB
+
+    const response = {
+      itemId: itemId,
+      ...cartItem.toObject(),
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     res
       .status(500)
@@ -196,12 +204,23 @@ app.get("/api/cart", verifyToken, async (req, res) => {
   const itemId = req.query.itemId;
 
   try {
-    const cart = await Cart.findOne({ userId: userId, _id: itemId });
+    let cartQuery = { userId: userId };
+    if (itemId) {
+      cartQuery._id = itemId;
+    }
+
+    const cart = await Cart.findOne(cartQuery);
     if (!cart) {
       res.status(404).json({ message: "Esse itemId não foi encontrado" });
       return;
     }
-    res.status(200).json(cart);
+
+    const response = {
+      itemId: cart._id,
+      ...cart.toObject(),
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     res
       .status(500)
@@ -224,6 +243,36 @@ app.delete("/api/cart", verifyToken, async (req, res) => {
     res
       .status(500)
       .json({ error: "Ocorreu um erro ao remover o item do carrinho" });
+  }
+});
+
+app.put("/api/cart", verifyToken, async (req, res) => {
+  const itemId = req.query.itemId;
+  const userId = req.query.userId;
+  const { quantity, price, name } = req.body;
+
+  try {
+    const updatedCartItem = await Cart.findOneAndUpdate(
+      { _id: itemId, userId: userId },
+      { quantity: quantity, price: price, name: name },
+      { new: true }
+    );
+
+    if (!updatedCartItem) {
+      res.status(404).json({ message: "Esse itemId não foi encontrado" });
+      return;
+    }
+
+    const response = {
+      itemId: updatedCartItem._id,
+      ...updatedCartItem.toObject(),
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Ocorreu um erro ao atualizar o item do carrinho" });
   }
 });
 

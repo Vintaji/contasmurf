@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api.service';
-import { of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 
 interface CartItem {
   userId: string;
@@ -20,31 +19,34 @@ export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   userId: string = '';
   itemId: string = '';
-  token: string | null | undefined;
+  totalPrice: string = '';
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem('userId') || '';
     this.itemId = localStorage.getItem('itemId') || '';
-    this.token = this.apiService.getToken(); // Obtém o token do serviço
-    this.getCartItems();
+    this.getCartItems(this.userId, this.itemId);
   }
 
-  getCartItems(): void {
-    this.apiService.getCartItems(this.userId, this.itemId).pipe(
-      tap((response: any) => {
-        this.cartItems = response;
-      }),
-      catchError((error: any) => {
+  getCartItems(userId: string, itemId: string): void {
+    this.apiService.getCartItems(userId, itemId).subscribe(
+      (response: CartItem[] | CartItem) => {
+        if (Array.isArray(response)) {
+          this.cartItems = response;
+        } else {
+          this.cartItems = [response];
+        }
+        this.updateTotalPrice(); // Atualiza o preço total após obter os itens do carrinho
+      },
+      (error: any) => {
         console.log('Ocorreu um erro ao obter os itens do carrinho:', error);
-        return of(null);
-      })
-    ).subscribe();
-  }  
+      }
+    );
+  }
 
   removeItem(item: CartItem): void {
-    this.apiService.removeCartItem(item.userId, item.itemId).subscribe(
+  this.apiService.removeCartItem(item).subscribe(
       () => {
         console.log('Item removido do carrinho');
         // Remova o item localmente da lista de carrinho, se necessário
@@ -52,6 +54,7 @@ export class CartComponent implements OnInit {
         if (index > -1) {
           this.cartItems.splice(index, 1);
         }
+        this.updateTotalPrice(); // Atualiza o preço total após remover o item do carrinho
       },
       (error) => {
         console.log('Ocorreu um erro ao remover o item do carrinho:', error);
@@ -61,11 +64,13 @@ export class CartComponent implements OnInit {
 
   decreaseQuantity(item: CartItem): void {
     if (item.quantity > 1) {
+      const previousQuantity = item.quantity;
       item.quantity--;
-      this.apiService.addToCart(item).subscribe(
+      item.price = item.price / previousQuantity * item.quantity; // Atualiza o preço proporcionalmente
+      this.updateCartItem(item).subscribe(
         (response: any) => {
           console.log('Item do carrinho atualizado:', response);
-          // Atualize a exibição do carrinho, se necessário
+          this.updateTotalPrice(); // Atualiza o preço total após atualizar o item do carrinho
         },
         (error: any) => {
           console.log('Ocorreu um erro ao atualizar o item do carrinho:', error);
@@ -76,11 +81,17 @@ export class CartComponent implements OnInit {
   
   increaseQuantity(item: CartItem): void {
     if (item.quantity < 10) {
+      const previousQuantity = item.quantity;
       item.quantity++;
-      this.apiService.addToCart(item).subscribe(
+      item.price = item.price / previousQuantity * item.quantity; // Atualiza o preço proporcionalmente
+      this.updateCartItem(item).subscribe(
         (response: any) => {
           console.log('Item do carrinho atualizado:', response);
-          // Atualize a exibição do carrinho, se necessário
+          this.updateTotalPrice(); // Atualiza o preço total após atualizar o item do carrinho
+  
+          if (item.quantity === 10) {
+            alert('A quantidade por item é 10.');
+          }
         },
         (error: any) => {
           console.log('Ocorreu um erro ao atualizar o item do carrinho:', error);
@@ -88,15 +99,31 @@ export class CartComponent implements OnInit {
       );
     }
   }
-
-  getTotalPrice(): string {
+  
+  private updateCartItem(item: CartItem): Observable<any> {
+    return this.apiService.updateCartItem(item);
+  }
+  
+  private updateTotalPrice(): void {
     let total = 0;
     for (const item of this.cartItems) {
-      total += item.price * item.quantity;
+      total += item.price;
     }
-    return total.toFixed(2);
-  }
+    this.totalPrice = total.toFixed(2);
+  }  
+  
+  addItemToCart(item: CartItem): void {
+    const existingItem = this.cartItems.find(cartItem => cartItem.itemId === item.itemId);
 
+    if (existingItem) {
+      existingItem.quantity += item.quantity;
+      existingItem.price += item.price * item.quantity;
+    } else {
+      this.cartItems.push(item);
+    }
+
+    this.updateTotalPrice(); // Atualiza o preço total após adicionar o item ao carrinho
+  }
   checkout(): void {
     // Lógica para finalizar a compra
   }

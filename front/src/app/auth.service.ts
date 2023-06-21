@@ -9,7 +9,6 @@ import { tap, map } from 'rxjs/operators';
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api';
   private tokenKey = 'token';
-  private allowedRolesKey = 'allowedRoles';
 
   constructor(private http: HttpClient) {}
 
