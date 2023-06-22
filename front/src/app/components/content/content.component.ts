@@ -17,7 +17,7 @@ export class ContentComponent {
       price: 10,
       quantity: 1
     };
-  
+
     this.apiService.addToCart(item).subscribe(
       (response: any) => {
         console.log('Item adicionado ao carrinho:', response);

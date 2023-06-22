@@ -46,7 +46,7 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(item: CartItem): void {
-  this.apiService.removeCartItem(item).subscribe(
+    this.apiService.removeCartItem(item).subscribe(
       () => {
         console.log('Item removido do carrinho');
         // Remova o item localmente da lista de carrinho, se necessário
@@ -90,7 +90,7 @@ export class CartComponent implements OnInit {
           this.updateTotalPrice(); // Atualiza o preço total após atualizar o item do carrinho
   
           if (item.quantity === 10) {
-            alert('A quantidade por item é 10.');
+            alert('A quantidade maxima por item é 10.');
           }
         },
         (error: any) => {
@@ -121,9 +121,9 @@ export class CartComponent implements OnInit {
     } else {
       this.cartItems.push(item);
     }
-
     this.updateTotalPrice(); // Atualiza o preço total após adicionar o item ao carrinho
   }
+
   checkout(): void {
     // Lógica para finalizar a compra
   }
