@@ -145,7 +145,7 @@ app.get("/api/accounts", verifyToken, async (req, res) => {
   res.send(listAcoounts);
 });
 
-app.post("/api/recuperarnome", (req, res) => {
+app.post("/api/recuperarnome", verifyToken, (req, res) => {
   const { to, from, subject, text } = req.body;
 
   // Crie o objeto de e-mail
@@ -167,6 +167,121 @@ app.post("/api/recuperarnome", (req, res) => {
       console.error("Erro ao enviar o e-mail", error);
       res.status(500).json({ error: "Erro ao enviar o e-mail" });
     });
+});
+
+app.post("/api/recuperarsenha", (req, res) => {
+  const { email } = req.body;
+
+  const token = jwt.sign({ email }, chaveSecreta, { expiresIn: "1h" });
+
+  if (!email) {
+    return res.status(400).json({ error: "Endereço de e-mail não fornecido" });
+  }
+
+  const mailOptions = {
+    from: "recuperar@contasmurf.com",
+    to: email,
+    subject: "Conta Smurf - Recuperação de senha",
+    text: `Olá, você solicitou a recuperação de senha do e-mail ${email}.\n\nClique no link abaixo para redefinir sua senha:\n\nRedefinir senha`,
+    html: `<p>Olá, você solicitou a recuperação de senha do e-mail <b>${email}</b>.</p><p>Clique no link abaixo para redefinir sua senha:</p><p><a href="http://localhost:4200/redefinirsenha?token=${token}">Redefinir senha</a></p>`,
+  };
+
+  // Envie o e-mail
+  sgMail
+    .send(mailOptions)
+    .then(() => {
+      console.log("E-mail enviado com sucesso");
+      res.status(200).json({ token, message: "E-mail enviado com sucesso" });
+    })
+    .catch((error) => {
+      console.error("Erro ao enviar o e-mail", error);
+      res.status(500).json({ error: "Erro ao enviar o e-mail" });
+    });
+});
+
+app.post("/api/redefinirsenha", (req, res) => {
+  const { token, novaSenha, email } = req.body;
+
+  // Verificar a validade do token
+  try {
+    jwt.verify(token, chaveSecreta);
+    // O token é válido
+    // Prossiga com o restante do código
+
+    // Encontre o usuário correspondente no banco de dados usando o token
+    User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+    })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ error: "Token inválido ou expirado" });
+        }
+
+        // Atualizar a senha do usuário
+        user.password = novaSenha;
+
+        // Limpar os campos de redefinição de senha do usuário
+        user.resetToken = undefined;
+        user.resetTokenExpiration = undefined;
+
+        // Salvar as alterações no banco de dados
+        return user
+          .save()
+          .then(() => {
+            // Verificar se a senha foi alterada
+            if (user.password === novaSenha) {
+              // Envio do e-mail de confirmação de senha alterada
+              const mailOptions = {
+                from: "recuperar@contasmurf.com",
+                to: email, // Usando o valor do e-mail fornecido no corpo da requisição
+                subject: "Conta Smurf - Senha alterada",
+                html: "<p>Sua senha foi alterada com sucesso.</p>",
+              };
+
+              return sgMail
+                .send(mailOptions)
+                .then(() => {
+                  console.log("E-mail enviado com sucesso");
+                  return res
+                    .status(200)
+                    .json({ message: "Senha alterada com sucesso." });
+                })
+                .catch((error) => {
+                  console.error("Erro ao enviar o e-mail", error);
+                  return res.status(500).json({
+                    error:
+                      "A senha foi alterada, mas ocorreu um erro ao enviar o e-mail",
+                  });
+                });
+            } else {
+              // A senha não foi alterada com sucesso
+              return res
+                .status(500)
+                .json({ error: "A senha não foi alterada" });
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Erro ao salvar as alterações no banco de dados",
+              error
+            );
+            return res.status(500).json({
+              error: "Erro ao salvar as alterações no banco de dados",
+            });
+          });
+      })
+      .catch((error) => {
+        console.error("Erro ao encontrar o usuário no banco de dados", error);
+        return res
+          .status(500)
+          .json({ error: "Erro ao encontrar o usuário no banco de dados" });
+      });
+  } catch (error) {
+    // O token é inválido ou expirou
+    console.error("Token inválido ou expirado", error);
+    return res.status(401).json({ error: "Token inválido ou expirado" });
+  }
 });
 
 // Rota para adicionar um item ao carrinho

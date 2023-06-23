@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-recuper-nome',
@@ -13,7 +14,10 @@ export class RecuperNomeComponent {
   tentativa: boolean = false;
   pix: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+      private http: HttpClient,
+      private authService: AuthService
+    ) { }
 
   enviarEmail() {
     const url = 'http://localhost:3000/api/recuperarnome'; // Rota do backend que lida com o envio de e-mail
@@ -27,7 +31,11 @@ export class RecuperNomeComponent {
       text: `Nick: ${this.nome}\nSenha: ${this.senha}\nE-mail: ${this.email}\nPix: ${this.pix}\nTermos: ${tentativaTexto}`,
     };
 
-    this.http.post(url, body)
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `${this.authService.getToken()}`); // Adicione o cabeçalho de autorização
+      
+    this.http.post(url, body, {headers})
       .subscribe(
         response => {
           console.log('E-mail enviado com sucesso');

@@ -17,6 +17,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
+import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
+import { ShoplistComponent } from './pages/shoplist/shoplist.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RegisterComponent,
     LoginComponent,
     CartComponent,
+    RecuperarsenhaComponent,
+    RedefinirsenhaComponent,
+    ShoplistComponent,
   ],
   imports: [
     BrowserModule,

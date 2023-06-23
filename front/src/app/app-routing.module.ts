@@ -9,6 +9,9 @@ import { UserComponent } from './pages/user/user.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
+import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
+import { ShoplistComponent } from './pages/shoplist/shoplist.component';
 
 const routes: Routes = [
   {
@@ -29,6 +32,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'shoplist',
+    component: ShoplistComponent,
+  },
+  {
     path: 'dashboard',
     component: AdminComponent,
     canActivate: [AuthGuard],
@@ -40,7 +47,16 @@ const routes: Routes = [
   },
   {
     path: 'recuperarnome',
-    component: RecuperNomeComponent
+    component: RecuperNomeComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'recuperarsenha',
+    component: RecuperarsenhaComponent,
+  },
+  {
+    path: 'redefinirsenha',
+    component: RedefinirsenhaComponent,
   },
   {
     path: '**',
