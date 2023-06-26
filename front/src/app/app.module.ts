@@ -20,6 +20,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
+import { ShoplistFerroComponent } from './pages/shoplist/shoplist-ferro/shoplist-ferro.component';
+import { ShoplistPrataComponent } from './pages/shoplist/shoplist-prata/shoplist-prata.component';
+import { ShoplistBronzeComponent } from './pages/shoplist/shoplist-bronze/shoplist-bronze.component';
+import { ShoplistOuroComponent } from './pages/shoplist/shoplist-ouro/shoplist-ouro.component';
+import { ShoplistPlatinaComponent } from './pages/shoplist/shoplist-platina/shoplist-platina.component';
+import { ShoplistDiamenteComponent } from './pages/shoplist/shoplist-diamente/shoplist-diamente.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +44,12 @@ import { ShoplistComponent } from './pages/shoplist/shoplist.component';
     RecuperarsenhaComponent,
     RedefinirsenhaComponent,
     ShoplistComponent,
+    ShoplistFerroComponent,
+    ShoplistPrataComponent,
+    ShoplistBronzeComponent,
+    ShoplistOuroComponent,
+    ShoplistPlatinaComponent,
+    ShoplistDiamenteComponent,
   ],
   imports: [
     BrowserModule,
