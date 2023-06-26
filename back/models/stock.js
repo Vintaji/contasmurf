@@ -20,6 +20,9 @@ const StockSchema = new mongoose.Schema({
   servidor: {
     type: String,
   },
+  elo: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

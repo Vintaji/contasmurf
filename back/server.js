@@ -19,27 +19,20 @@ const verifyToken = require("./middlewares/verifyToken");
 // Models
 const User = require("./models/user");
 const Stock = require("./models/stock");
-const StockPBE = require("./models/stockPBE");
 const Cart = require("./models/cart");
 
 // Rota de registro de Estoque
 app.post("/api/stock", verifyToken, async (req, res) => {
-  const { login, senha, ea, skins, nivel, servidor } = req.body;
+  const { login, senha, ea, skins, nivel, servidor, elo } = req.body;
   // Verificar se o conta já existe no banco de dados
   const existingStock = await Stock.findOne({
-    login,
-    senha,
-    ea,
-    skins,
-    nivel,
-    servidor,
+    $or: [{ login }, { senha }],
   });
   if (existingStock) {
     return res.status(400).json({ message: "Estoque já registrado" });
   }
-
   // Criar a nova conta no banco de dados
-  const newStock = new Stock({ login, senha, ea, skins, nivel, servidor });
+  const newStock = new Stock({ login, senha, ea, skins, nivel, servidor, elo });
   await newStock.save();
 
   res.json({ message: "Estoque adicionado com sucesso" });
@@ -49,42 +42,6 @@ app.post("/api/stock", verifyToken, async (req, res) => {
 app.get("/api/stock", async (req, res) => {
   const listStock = await Stock.find();
   res.send(listStock);
-});
-
-// Rota de registro de Estoque PBE
-app.post("/api/stockpbe", verifyToken, async (req, res) => {
-  const { login, senha, ea, skins, nivel, servidor } = req.body;
-  // Verificar se o conta já existe no banco de dados
-  const existingStockPBE = await Stock.findOne({
-    login,
-    senha,
-    ea,
-    skins,
-    nivel,
-    servidor,
-  });
-  if (existingStockPBE) {
-    return res.status(400).json({ message: "Estoque já registrado" });
-  }
-
-  // Criar a nova conta no banco de dados
-  const newStockPBE = new StockPBE({
-    login,
-    senha,
-    ea,
-    skins,
-    nivel,
-    servidor,
-  });
-  await newStockPBE.save();
-
-  res.json({ message: "Estoque adicionado com sucesso" });
-});
-
-// Rota de estoque PBE
-app.get("/api/stockpbe", async (req, res) => {
-  const listStockPBE = await StockPBE.find();
-  res.send(listStockPBE);
 });
 
 // Rota de registro de usuário

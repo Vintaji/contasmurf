@@ -1,7 +1,7 @@
 const mongoose = require("../database/index.js");
 
 // Definição do modelo do usuário
-const StockPBESchema = new mongoose.Schema({
+const StockSchema = new mongoose.Schema({
   login: {
     type: String,
   },
@@ -20,12 +20,15 @@ const StockPBESchema = new mongoose.Schema({
   servidor: {
     type: String,
   },
+  elo: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-const StockPBE = mongoose.model("StockPBE", StockPBESchema);
+const Stock = mongoose.model("Stock", StockSchema);
 
-module.exports = StockPBE;
+module.exports = Stock;

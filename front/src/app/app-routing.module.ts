@@ -12,12 +12,6 @@ import { CartComponent } from './pages/cart/cart.component';
 import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
-import { ShoplistFerroComponent } from './pages/shoplist/shoplist-ferro/shoplist-ferro.component';
-import { ShoplistBronzeComponent } from './pages/shoplist/shoplist-bronze/shoplist-bronze.component';
-import { ShoplistPrataComponent } from './pages/shoplist/shoplist-prata/shoplist-prata.component';
-import { ShoplistOuroComponent } from './pages/shoplist/shoplist-ouro/shoplist-ouro.component';
-import { ShoplistPlatinaComponent } from './pages/shoplist/shoplist-platina/shoplist-platina.component';
-import { ShoplistDiamenteComponent } from './pages/shoplist/shoplist-diamente/shoplist-diamente.component';
 
 const routes: Routes = [
   {
@@ -40,30 +34,6 @@ const routes: Routes = [
   {
     path: 'shoplist',
     component: ShoplistComponent,
-  },
-  {
-    path: 'shoplist-ferro',
-    component: ShoplistFerroComponent,
-  },
-  {
-    path: 'shoplist-bronze',
-    component: ShoplistBronzeComponent,
-  },
-  {
-    path: 'shoplist-prata',
-    component: ShoplistPrataComponent,
-  },
-  {
-    path: 'shoplist-ouro',
-    component: ShoplistOuroComponent,
-  },
-  {
-    path: 'shoplist-platina',
-    component: ShoplistPlatinaComponent,
-  },
-  {
-    path: 'shoplist-diamante',
-    component: ShoplistDiamenteComponent,
   },
   {
     path: 'dashboard',
