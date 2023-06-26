@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../api.service';
 import { AuthService } from '../../../auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddStockDialogComponent } from '../add-stock-dialog/add-stock-dialog.component';
 
 @Component({
   selector: 'app-estoque-elo',
@@ -15,6 +17,7 @@ export class EstoqueEloComponent implements OnInit{
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
+    public dialog: MatDialog
   ) { }
 
   logout(): void {
@@ -29,6 +32,16 @@ export class EstoqueEloComponent implements OnInit{
       console.error('Erro ao remover item do estoque Elo:', error);
     });
   }
+  
+  openPopup(): void {
+    const dialogRef = this.dialog.open(AddStockDialogComponent, {
+      width: '400px', // Defina a largura desejada para o popup/modal
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      // Lógica a ser executada após o fechamento do popup/modal
+    });
+  }  
   ngOnInit(): void {
     // Fetch stock data from ApiService
     this.apiService.getStockElo().subscribe((data) => {

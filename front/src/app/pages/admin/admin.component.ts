@@ -15,6 +15,5 @@ export class AdminComponent {
   // Logout method
   logout(): void {
     this.authService.removeToken();
-    // Perform other necessary actions after logout, such as redirecting to the login page
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../api.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddStockDialogComponent } from '../add-stock-dialog/add-stock-dialog.component';
 
 @Component({
   selector: 'app-estoque-unraked',
@@ -13,6 +15,7 @@ export class EstoqueUnrakedComponent implements OnInit{
 
   constructor(
     private apiService: ApiService,
+    public dialog: MatDialog
   ) { }
 
 
@@ -25,6 +28,15 @@ export class EstoqueUnrakedComponent implements OnInit{
     });
   }
 
+  openPopupElo(): void {
+    const dialogRef = this.dialog.open(AddStockDialogComponent, {
+      width: '400px', // Defina a largura desejada para o popup/modal
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      // Lógica a ser executada após o fechamento do popup/modal
+    });
+  }  
   ngOnInit(): void {
     // Fetch stock data from ApiService
     this.apiService.getStock().subscribe((data: any[]) => {

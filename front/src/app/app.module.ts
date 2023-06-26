@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -46,7 +47,7 @@ import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashbo
     AddStockDialogComponent,
     EstoqueUnrakedComponent,
     EstoqueEloComponent,
-    MenuDashboardComponent,
+    MenuDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +55,8 @@ import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashbo
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatDialogModule
   ],
   providers: [
   ],

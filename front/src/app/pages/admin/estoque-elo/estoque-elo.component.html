@@ -1,12 +1,12 @@
 <app-menu-dashboard></app-menu-dashboard>
 <div class="h-screen min-h-full">
-    <div class="flex items-center justify-center">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-12 pr-2">Estoque Shoplist - </h1>
-        <button class="bg-[#D75433] text-white font-semibold px-4 py-2 rounded">
-          Adicionar Estoque
-        </button>  
-      </div>
-      <div class="flex justify-center items-center">
+  <div class="flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-4">Estoque Elo</h1>
+    <button class="bg-[#D75433] text-white px-2 py-1 rounded" (click)="openPopup()">
+      Adicionar Estoque
+    </button>    
+  </div>
+      <div class="py-4 flex justify-center items-center">
         <table *ngIf="stockElo.length > 0">
           <thead>
             <tr>
@@ -44,10 +44,11 @@
         </div>
       </div>
       <div class="flex justify-center items-center mt-4">
-        <pagination-controls class="my-4 flex justify-center items-center" (pageChange)="currentPageElo = $event"
-        previousLabel="Anterior" nextLabel="Próxima" [directionLinks]="true" [responsive]="true"
-        containerClass="flex items-center">
-      </pagination-controls>
-      </div>
+        <pagination-controls class="my-4 flex justify-center items-center"
+          (pageChange)="currentPageElo = $event"
+          previousLabel="Anterior" nextLabel="Próxima" [directionLinks]="true" [responsive]="true"
+          containerClass="flex items-center">
+        </pagination-controls>
+      </div>      
 </div>
        

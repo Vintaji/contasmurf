@@ -27,7 +27,7 @@ app.post("/api/stock", verifyToken, async (req, res) => {
   const { login, senha, ea, skins, nivel, servidor, elo } = req.body;
   // Verificar se o conta já existe no banco de dados
   const existingStock = await Stock.findOne({
-    $or: [{ login }, { senha }],
+    $or: [{ login }],
   });
   if (existingStock) {
     return res.status(400).json({ message: "Estoque já registrado" });
@@ -314,7 +314,6 @@ app.post("/api/redefinirsenha", (req, res) => {
 });
 
 // Rota para adicionar um item ao carrinho
-
 app.post("/api/cart", verifyToken, async (req, res) => {
   const { userId, quantity, price, name } = req.body;
 
