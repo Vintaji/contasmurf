@@ -1,0 +1,53 @@
+<app-menu-dashboard></app-menu-dashboard>
+<div class="h-screen min-h-full">
+    <div class="flex items-center justify-center">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-12 pr-2">Estoque Shoplist - </h1>
+        <button class="bg-[#D75433] text-white font-semibold px-4 py-2 rounded">
+          Adicionar Estoque
+        </button>  
+      </div>
+      <div class="flex justify-center items-center">
+        <table *ngIf="stockElo.length > 0">
+          <thead>
+            <tr>
+              <th class="px-8 py-2">Login</th>
+              <th class="px-8 py-2">Senha</th>
+              <th class="px-8 py-2">E.A</th>
+              <th class="px-8 py-2">LVL</th>
+              <th class="px-8 py-2">Elo</th>
+              <th class="px-8 py-2">Skins</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let stockItem of stockElo | paginate: { itemsPerPage: itemsPerPageElo, currentPage: currentPageElo }; let i = index">
+              <tr>
+                <td class="px-8 py-2">{{ stockItem['login'] }}</td>
+                <td class="px-8 py-2">{{ stockItem['senha'] }}</td>
+                <td class="px-8 py-2">{{ stockItem['ea'] }}</td>
+                <td class="px-8 py-2">{{ stockItem['nivel'] }}</td>
+                <td class="px-8 py-2">{{ stockItem['elo'] }}</td>
+                <td class="px-8 py-2">{{ stockItem['skins'] }}</td>
+                <td class="px-8 py-2">
+                  <button (click)="removeStockElo(i, stockItem._id)" class="text-red-600 hover:text-red-800">
+                    <svg class="h-5 w-5 inline-block mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5.293 5.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Remover
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div *ngIf="stockElo.length === 0" class="text-gray-500 text-center py-8">
+          Estoque vazio
+        </div>
+      </div>
+      <div class="flex justify-center items-center mt-4">
+        <pagination-controls class="my-4 flex justify-center items-center" (pageChange)="currentPageElo = $event"
+        previousLabel="Anterior" nextLabel="Próxima" [directionLinks]="true" [responsive]="true"
+        containerClass="flex items-center">
+      </pagination-controls>
+      </div>
+</div>
+       

@@ -19,6 +19,7 @@ const verifyToken = require("./middlewares/verifyToken");
 // Models
 const User = require("./models/user");
 const Stock = require("./models/stock");
+const StockElo = require("./models/stockElo");
 const Cart = require("./models/cart");
 
 // Rota de registro de Estoque
@@ -38,10 +39,81 @@ app.post("/api/stock", verifyToken, async (req, res) => {
   res.json({ message: "Estoque adicionado com sucesso" });
 });
 
+// Rota de exclusão de Estoque
+app.delete("/api/stock", verifyToken, async (req, res) => {
+  const stockId = req.query.stockId;
+
+  try {
+    // Verificar se o estoque existe no banco de dados
+    const existingStock = await Stock.findById(stockId);
+    if (!existingStock) {
+      return res.status(404).json({ message: "Estoque não encontrado" });
+    }
+
+    // Remover o estoque do banco de dados
+    await Stock.findByIdAndDelete(stockId);
+
+    res.json({ message: "Estoque removido com sucesso" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao remover o estoque" });
+  }
+});
+
 // Rota de autenticação de usuário
 app.get("/api/stock", async (req, res) => {
   const listStock = await Stock.find();
   res.send(listStock);
+});
+
+app.post("/api/stockElo", verifyToken, async (req, res) => {
+  const { login, senha, ea, skins, nivel, servidor, elo } = req.body;
+  // Verificar se o conta já existe no banco de dados
+  const existingStockElo = await StockElo.findOne({
+    $or: [{ login }, { senha }],
+  });
+  if (existingStockElo) {
+    return res.status(400).json({ message: "Estoque já registrado" });
+  }
+  // Criar a nova conta no banco de dados
+  const newStockElo = new StockElo({
+    login,
+    senha,
+    ea,
+    skins,
+    nivel,
+    servidor,
+    elo,
+  });
+  await newStockElo.save();
+
+  res.json({ message: "Estoque adicionado com sucesso" });
+});
+
+app.delete("/api/stockElo", verifyToken, async (req, res) => {
+  const stockId = req.query.stockId;
+
+  try {
+    // Verificar se o estoque existe no banco de dados
+    const existingStockElo = await StockElo.findById(stockId);
+    if (!existingStockElo) {
+      return res.status(404).json({ message: "Estoque Elo não encontrado" });
+    }
+
+    // Remover o estoque do banco de dados
+    await StockElo.findByIdAndDelete(stockId);
+
+    res.json({ message: "Estoque Elo removido com sucesso" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao remover o estoque Elo" });
+  }
+});
+
+// Rota de autenticação de usuário
+app.get("/api/stockElo", async (req, res) => {
+  const listStockElo = await StockElo.find();
+  res.send(listStockElo);
 });
 
 // Rota de registro de usuário
@@ -89,7 +161,7 @@ app.post("/api/login", async (req, res) => {
   // Função para gerar o token JWT
   function generateToken(user) {
     return jwt.sign({ userId: user._id }, chaveSecreta, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
   }
 

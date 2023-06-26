@@ -12,6 +12,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
+import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: AdminComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'estoque-elo',
+    component: EstoqueEloComponent,
     canActivate: [AuthGuard],
   },
   {

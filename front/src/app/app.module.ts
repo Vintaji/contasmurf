@@ -22,6 +22,9 @@ import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.c
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
 import { AddStockDialogComponent } from './pages/admin/add-stock-dialog/add-stock-dialog.component';
+import { EstoqueUnrakedComponent } from './pages/admin/estoque-unraked/estoque-unraked.component';
+import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
+import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,9 @@ import { AddStockDialogComponent } from './pages/admin/add-stock-dialog/add-stoc
     RedefinirsenhaComponent,
     ShoplistComponent,
     AddStockDialogComponent,
+    EstoqueUnrakedComponent,
+    EstoqueEloComponent,
+    MenuDashboardComponent,
   ],
   imports: [
     BrowserModule,

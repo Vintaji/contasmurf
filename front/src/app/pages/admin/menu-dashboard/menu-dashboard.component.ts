@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../../auth.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  selector: 'app-menu-dashboard',
+  templateUrl: './menu-dashboard.component.html',
+  styleUrls: ['./menu-dashboard.component.css']
 })
-export class AdminComponent {
-  // Component properties
+export class MenuDashboardComponent {
   constructor(
     private authService: AuthService,
   ) { }
-
-  // Logout method
   logout(): void {
     this.authService.removeToken();
     // Perform other necessary actions after logout, such as redirecting to the login page

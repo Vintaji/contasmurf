@@ -91,6 +91,18 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/stock`, { headers: this.getHeaders() });
   }
 
+  getStockElo(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/stockElo`, { headers: this.getHeaders() });
+  }
+
+  delStock(stockId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/stock?stockId=${stockId}`, { headers: this.getHeaders() });
+  }
+  
+  delStockElo(stockId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/stockElo?stockId=${stockId}`, { headers: this.getHeaders() });
+  }  
+
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     let headers = new HttpHeaders();
