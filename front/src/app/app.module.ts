@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.component';
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
+import { AddStockDialogComponent } from './pages/admin/add-stock-dialog/add-stock-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ShoplistComponent } from './pages/shoplist/shoplist.component';
     RecuperarsenhaComponent,
     RedefinirsenhaComponent,
     ShoplistComponent,
+    AddStockDialogComponent,
   ],
   imports: [
     BrowserModule,

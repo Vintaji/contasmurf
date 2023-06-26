@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
+  [x: string]: any;
   stock: any[""];
   currentPage = 1; // Página atual
   itemsPerPage = 10  ; // Quantidade de itens por página
