@@ -9,7 +9,7 @@ import { ApiService } from '../../api.service';
 export class ShoplistComponent implements OnInit {
   stockElo: any[] = []; // Array to hold stockElo data
   currentPageElo = 1; // Current page for stockElo pagination
-  itemsPerPageElo = 10; // Number of items per page for stockElo
+  itemsPerPageElo = 5; // Number of items per page for stockElo
 
   constructor(
     private apiService: ApiService,

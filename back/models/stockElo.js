@@ -26,6 +26,9 @@ const StockEloSchema = new mongoose.Schema({
   divisao: {
     type: String,
   },
+  imagem: {
+    type: String,
+  },
 });
 
 const StockElo = mongoose.model("StockElo", StockEloSchema);

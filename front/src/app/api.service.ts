@@ -86,6 +86,13 @@ export class ApiService {
     return this.http.put(url, item, { headers });
   }
   
+  postStock(objeto: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/stock`, objeto, { headers: this.getHeaders() });
+  }  
+
+  postStockPBE(objeto: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/stockPBE`, objeto, { headers: this.getHeaders() });
+  } 
   getStock(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/stock`, { headers: this.getHeaders() });
   }

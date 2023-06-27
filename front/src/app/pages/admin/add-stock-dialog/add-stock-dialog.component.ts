@@ -16,15 +16,18 @@ export class AddStockDialogComponent {
   ea: number | null = null;
   nivel: number | null = null;
   skins: string | null = null;
-  elo: string | null = null;
+  elo: string = '';
   divisao: number | null = null;
   servidor: string | null = null;
-  database: string | null = null;
+  imagem: string = '';
+
+  private apiUrl = 'http://localhost:3000/api';
+  private siteUrl = 'http://localhost:4200';
 
   constructor(private http: HttpClient, private authService: AuthService, private apiService: ApiService, private router: Router) {}
 
   adicionarEstoque(): void {
-    if (!this.login || !this.senha) {
+    if (!this.login || !this.senha || !this.elo || !this.divisao ) {
       // Um ou mais campos obrigatórios estão vazios
       console.error('Preencha todos os campos obrigatórios');
       alert('Preencha todos os campos obrigatórios');
@@ -48,29 +51,10 @@ export class AddStockDialogComponent {
       elo: this.elo,
       divisao: this.divisao,
       servidor: this.servidor,
-      database: this.database
+      imagem: this.opcoesImagens[this.elo] || ''
     };
 
-    let endpoint: string;
-
-    // Defina o endpoint com base no banco de dados selecionado
-    switch (this.database) {
-      case 'Unraked':
-        endpoint = 'http://localhost:3000/api/stock';
-        break;
-      case 'Elo':
-        endpoint = 'http://localhost:3000/api/stockElo';
-        break;
-      case 'PBE':
-        endpoint = 'http://localhost:3000/api/stockPBE';
-        break;
-      default:
-        // Caso nenhum banco de dados válido seja selecionado, exiba um erro ou faça qualquer outra ação necessária
-        console.error('Banco de dados inválido');
-        return;
-    }
-
-    this.http.post(endpoint, data, { headers }).subscribe(response => {
+    this.http.post(`${this.apiUrl}/stockElo`, data, { headers }).subscribe(response => {
       // Lógica a ser executada após o sucesso do POST
       console.log('Estoque adicionado com sucesso', response);
       alert('Estoque adicionado com sucesso');
@@ -82,6 +66,25 @@ export class AddStockDialogComponent {
       alert('Estoque já registrado');
       this.fecharModal();
     });
+  }
+
+  opcoesImagens: { [key: string]: string } = {
+    Unraked: this.siteUrl + '/assets/png/unraked.webp',
+    Ferro: this.siteUrl + '/assets/png/ferro.webp',
+    Bronze: this.siteUrl + '/assets/png/bronze.webp',
+    Prata: this.siteUrl + '/assets/png/prata.webp',
+    Ouro: this.siteUrl + '/assets/png/ouro.webp',
+    Platina: this.siteUrl + '/assets/png/platina.webp',
+    Esmeralda: this.siteUrl + '/assets/png/unraked.webp',
+    Diamante: this.siteUrl + '/assets/png/diamante.webp',
+    Mestre: this.siteUrl + '/assets/png/mestre.webp',
+    Graomestre: this.siteUrl + '/assets/png/graomestre.webp',
+    Desafiante: this.siteUrl + '/assets/png/desafiante.webp'
+  };
+
+  onChangeElo(): void {
+    // Obtém o caminho da imagem associada à opção selecionada
+    this.imagem = this.opcoesImagens[this.elo];
   }
 
   fecharModal(): void {

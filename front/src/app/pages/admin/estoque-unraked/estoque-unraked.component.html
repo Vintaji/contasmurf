@@ -1,49 +1,61 @@
 <div class="h-screen min-h-full">
   <div class="flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-4">Estoque Unraked</h1>
-    <button class="bg-[#D75433] text-white px-2 py-1 rounded" (click)="openPopup()">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-6 pb-6">Estoque Unraked</h1>
+    <div class="pb-6">
+      <label class="text-sm font-semibold">Insira o payload das contas unraked:</label>
+      <textarea [(ngModel)]="textoInput" name="contas" required
+        class="w-full px-4 py-4 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        style="height: 100px;"></textarea>
+    </div>
+    <button (click)="converterTexto()" class="bg-[#D75433] text-white px-2 py-1 rounded">
       Adicionar Estoque
-    </button>  
+    </button>
   </div>
-      <div class="py-4 flex justify-center items-center">
-        <table *ngIf="stock.length > 0">
-          <thead>
-            <tr>
-              <th class="px-8 py-2">Login</th>
-              <th class="px-8 py-2">Senha</th>
-              <th class="px-8 py-2">E.A</th>
-              <th class="px-8 py-2">LVL</th>
-              <th class="px-8 py-2">Skins</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let stockItem of stock | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }; let i = index">
-              <tr>
-                <td class="px-8 py-2">{{ stockItem['login'] }}</td>
-                <td class="px-8 py-2">{{ stockItem['senha'] }}</td>
-                <td class="px-8 py-2">{{ stockItem['ea'] }}</td>
-                <td class="px-8 py-2">{{ stockItem['nivel'] }}</td>
-                <td class="px-8 py-2">{{ stockItem['skins'] }}</td>
-                <td class="px-8 py-2">
-                  <button (click)="removeStock(i, stockItem._id)" class="text-red-600 hover:text-red-800">
-                    <svg class="h-5 w-5 inline-block mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M5.293 5.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Remover
-                  </button>
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <div *ngIf="stock.length === 0" class="text-gray-500 text-center py-8">
-          Estoque vazio
-        </div>
-      </div>
-      <div class="flex justify-center items-center mt-4">
-        <pagination-controls class="my-4 flex justify-center items-center" (pageChange)="currentPage = $event"
-        previousLabel="Anterior" nextLabel="Próxima" [directionLinks]="true" [responsive]="true"
-        containerClass="flex items-center">
-      </pagination-controls>
-      </div>
+  <div class="py-6 flex justify-center items-center">
+    <table *ngIf="stock.length > 0">
+      <thead>
+        <tr>
+          <th class="px-8 py-2">Login</th>
+          <th class="px-8 py-2">Senha</th>
+          <th class="px-8 py-2">E.A</th>
+          <th class="px-8 py-2">LVL</th>
+          <th class="px-8 py-2">Skins</th>
+          <th class="px-8 py-2">Servidor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let stockItem of stock | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }; let i = index">
+          <tr>
+            <td class="px-8 py-2">{{ stockItem['login'] }}</td>
+            <td class="px-8 py-2">{{ stockItem['senha'] }}</td>
+            <td class="px-8 py-2">{{ stockItem['ea'] }}</td>
+            <td class="px-8 py-2">{{ stockItem['nivel'] }}</td>
+            <td class="px-8 py-2">
+              <div class="whitespace-pre-line">{{ replaceCommasWithNewlines(stockItem['skins']) }}</div>
+            </td>            
+            <td class="px-8 py-2">{{ stockItem['servidor'] }}</td>
+            <td class="px-8 py-2">
+              <button (click)="removeStock(i, stockItem._id)" class="text-red-600 hover:text-red-800">
+                <svg class="h-5 w-5 inline-block mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.293 5.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd" />
+                </svg>
+                Remover
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div *ngIf="stock.length === 0" class="text-gray-500 text-center py-8">
+      Estoque vazio
+    </div>
+  </div>
+  <div class="flex justify-center items-center mt-4">
+    <pagination-controls class="my-4 flex justify-center items-center" (pageChange)="currentPage = $event"
+      previousLabel="Anterior" nextLabel="Próxima" [directionLinks]="true" [responsive]="true"
+      containerClass="flex items-center">
+    </pagination-controls>
+  </div>
 </div>
