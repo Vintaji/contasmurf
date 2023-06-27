@@ -13,6 +13,7 @@ import { RecuperarsenhaComponent } from './pages/recuperarsenha/recuperarsenha.c
 import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.component';
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
 import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
+import { EstoquePbeComponent } from './pages/admin/estoque-pbe/estoque-pbe.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'estoque-elo',
     component: EstoqueEloComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'estoque-pbe',
+    component: EstoquePbeComponent,
     canActivate: [AuthGuard],
   },
   {

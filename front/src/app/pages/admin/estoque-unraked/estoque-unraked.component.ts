@@ -24,11 +24,11 @@ export class EstoqueUnrakedComponent implements OnInit{
       this.stock.splice(index, 1);
       alert('Item removido do estoque');
     }, (error: any) => {
-      console.error('Erro ao remover item do estoque:', error);
+      console.error('Erro ao remover item do estoque Unraked', error);
     });
   }
 
-  openPopupElo(): void {
+  openPopup(): void {
     const dialogRef = this.dialog.open(AddStockDialogComponent, {
       width: '400px', // Defina a largura desejada para o popup/modal
     });

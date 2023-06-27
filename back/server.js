@@ -18,13 +18,14 @@ const verifyToken = require("./middlewares/verifyToken");
 
 // Models
 const User = require("./models/user");
+const Cart = require("./models/cart");
 const Stock = require("./models/stock");
 const StockElo = require("./models/stockElo");
-const Cart = require("./models/cart");
+const StockPBE = require("./models/stockPBE");
 
 // Rota de registro de Estoque
 app.post("/api/stock", verifyToken, async (req, res) => {
-  const { login, senha, ea, skins, nivel, servidor, elo } = req.body;
+  const { login, senha, ea, skins, nivel, servidor } = req.body;
   // Verificar se o conta já existe no banco de dados
   const existingStock = await Stock.findOne({
     $or: [{ login }],
@@ -33,7 +34,7 @@ app.post("/api/stock", verifyToken, async (req, res) => {
     return res.status(400).json({ message: "Estoque já registrado" });
   }
   // Criar a nova conta no banco de dados
-  const newStock = new Stock({ login, senha, ea, skins, nivel, servidor, elo });
+  const newStock = new Stock({ login, senha, ea, skins, nivel, servidor });
   await newStock.save();
 
   res.json({ message: "Estoque adicionado com sucesso" });
@@ -61,16 +62,63 @@ app.delete("/api/stock", verifyToken, async (req, res) => {
 });
 
 // Rota de autenticação de usuário
-app.get("/api/stock", async (req, res) => {
+app.get("/api/stock", verifyToken, async (req, res) => {
   const listStock = await Stock.find();
   res.send(listStock);
 });
 
+app.post("/api/stockPBE", verifyToken, async (req, res) => {
+  const { servidor, login, senha } = req.body;
+  // Verificar se o conta já existe no banco de dados
+  const existingStockPBE = await StockPBE.findOne({
+    $or: [{ login }],
+  });
+  if (existingStockPBE) {
+    return res.status(400).json({ message: "Estoque já registrado" });
+  }
+  // Criar a nova conta no banco de dados
+  const newStockPBE = new StockPBE({
+    servidor,
+    login,
+    senha,
+  });
+  await newStockPBE.save();
+
+  res.json({ message: "Estoque adicionado com sucesso" });
+});
+
+// Rota de exclusão de Estoque
+app.delete("/api/stockPBE", verifyToken, async (req, res) => {
+  const stockId = req.query.stockId;
+
+  try {
+    // Verificar se o estoque existe no banco de dados
+    const existingStockPBE = await StockPBE.findById(stockId);
+    if (!existingStockPBE) {
+      return res.status(404).json({ message: "Estoque não encontrado" });
+    }
+
+    // Remover o estoque do banco de dados
+    await StockPBE.findByIdAndDelete(stockId);
+
+    res.json({ message: "Estoque removido com sucesso" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao remover o estoque" });
+  }
+});
+
+// Rota de autenticação de usuário
+app.get("/api/stockPBE", verifyToken, async (req, res) => {
+  const listStockPBE = await StockPBE.find();
+  res.send(listStockPBE);
+});
+
 app.post("/api/stockElo", verifyToken, async (req, res) => {
-  const { login, senha, ea, skins, nivel, servidor, elo } = req.body;
+  const { login, senha, ea, skins, nivel, servidor, elo, divisao } = req.body;
   // Verificar se o conta já existe no banco de dados
   const existingStockElo = await StockElo.findOne({
-    $or: [{ login }, { senha }],
+    $or: [{ login }],
   });
   if (existingStockElo) {
     return res.status(400).json({ message: "Estoque já registrado" });
@@ -84,6 +132,7 @@ app.post("/api/stockElo", verifyToken, async (req, res) => {
     nivel,
     servidor,
     elo,
+    divisao,
   });
   await newStockElo.save();
 
@@ -111,7 +160,7 @@ app.delete("/api/stockElo", verifyToken, async (req, res) => {
 });
 
 // Rota de autenticação de usuário
-app.get("/api/stockElo", async (req, res) => {
+app.get("/api/stockElo", verifyToken, async (req, res) => {
   const listStockElo = await StockElo.find();
   res.send(listStockElo);
 });

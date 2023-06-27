@@ -26,6 +26,7 @@ import { AddStockDialogComponent } from './pages/admin/add-stock-dialog/add-stoc
 import { EstoqueUnrakedComponent } from './pages/admin/estoque-unraked/estoque-unraked.component';
 import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
 import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashboard.component';
+import { EstoquePbeComponent } from './pages/admin/estoque-pbe/estoque-pbe.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashbo
     AddStockDialogComponent,
     EstoqueUnrakedComponent,
     EstoqueEloComponent,
-    MenuDashboardComponent
+    MenuDashboardComponent,
+    EstoquePbeComponent
   ],
   imports: [
     BrowserModule,
