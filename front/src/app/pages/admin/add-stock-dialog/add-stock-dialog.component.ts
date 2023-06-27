@@ -17,12 +17,14 @@ export class AddStockDialogComponent {
   nivel: number | null = null;
   skins: string | null = null;
   elo: string | null = null;
+  divisao: number | null = null;
+  servidor: string | null = null;
   database: string | null = null;
 
   constructor(private http: HttpClient, private authService: AuthService, private apiService: ApiService, private router: Router) {}
 
   adicionarEstoque(): void {
-    if (!this.login || !this.senha || !this.ea || !this.nivel || !this.skins || !this.elo || !this.database) {
+    if (!this.login || !this.senha) {
       // Um ou mais campos obrigatórios estão vazios
       console.error('Preencha todos os campos obrigatórios');
       alert('Preencha todos os campos obrigatórios');
@@ -44,6 +46,8 @@ export class AddStockDialogComponent {
       nivel: this.nivel,
       skins: this.skins,
       elo: this.elo,
+      divisao: this.divisao,
+      servidor: this.servidor,
       database: this.database
     };
 
@@ -58,7 +62,7 @@ export class AddStockDialogComponent {
         endpoint = 'http://localhost:3000/api/stockElo';
         break;
       case 'PBE':
-        endpoint = 'http://localhost:3000/api/stockElo';
+        endpoint = 'http://localhost:3000/api/stockPBE';
         break;
       default:
         // Caso nenhum banco de dados válido seja selecionado, exiba um erro ou faça qualquer outra ação necessária

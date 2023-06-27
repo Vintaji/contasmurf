@@ -38,6 +38,11 @@
             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
         <div>
+          <label class="text-sm font-semibold">Servidor:</label>
+          <input type="text" name="servidor" [(ngModel)]="servidor" required
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div>
           <label class="text-sm font-semibold">Elo:</label>
           <select name="elo" [(ngModel)]="elo" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
             <option value="Unraked">Unraked</option>
@@ -45,7 +50,21 @@
             <option value="Bronze">Bronze</option>
             <option value="Prata">Prata</option>
             <option value="Ouro">Ouro</option>
+            <option value="Platina">Platina</option>
+            <option value="Esmeralda">Esmeralda</option>
             <option value="Diamante">Diamante</option>
+            <option value="Mestre">Mestre</option>
+            <option value="Grão-mestre">Grão-mestre</option>
+            <option value="Desafiante">Desafiante</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-semibold">Divisão:</label>
+          <select name="divisao" [(ngModel)]="divisao" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
           </select>
         </div>
         <div class="flex justify-between">
