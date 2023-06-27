@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../../auth.service';
-import { ApiService } from '../../../api.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-stock-dialog',
@@ -24,10 +22,10 @@ export class AddStockDialogComponent {
   private apiUrl = 'http://localhost:3000/api';
   private siteUrl = 'http://localhost:4200';
 
-  constructor(private http: HttpClient, private authService: AuthService, private apiService: ApiService, private router: Router) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   adicionarEstoque(): void {
-    if (!this.login || !this.senha || !this.elo || !this.divisao ) {
+    if (!this.login || !this.senha || !this.ea || !this.nivel || !this.servidor || !this.elo || !this.divisao || !this.skins ) {
       // Um ou mais campos obrigatórios estão vazios
       console.error('Preencha todos os campos obrigatórios');
       alert('Preencha todos os campos obrigatórios');

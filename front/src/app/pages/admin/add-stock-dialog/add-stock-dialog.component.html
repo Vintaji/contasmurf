@@ -30,8 +30,9 @@
         </div>
         <div>
           <label class="text-sm font-semibold">Servidor:</label>
-          <input type="text" name="servidor" [(ngModel)]="servidor" required
-            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <select name="servidor" [(ngModel)]="servidor" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <option value="BR">BR</option>
+          </select>
         </div>
         <div>
           <label class="text-sm font-semibold">Elo:</label>
@@ -45,7 +46,7 @@
             <option value="Esmeralda">Esmeralda</option>
             <option value="Diamante">Diamante</option>
             <option value="Mestre">Mestre</option>
-            <option value="Graomestre">Grão-mestre</option>
+            <option value="Grão-mestre">Grão-mestre</option>
             <option value="Desafiante">Desafiante</option>
           </select>
         </div>
