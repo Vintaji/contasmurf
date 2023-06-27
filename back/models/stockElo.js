@@ -23,9 +23,8 @@ const StockEloSchema = new mongoose.Schema({
   elo: {
     type: String,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  divisao: {
+    type: String,
   },
 });
 
