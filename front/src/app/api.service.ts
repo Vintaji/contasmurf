@@ -76,7 +76,6 @@ export class ApiService {
     return this.http.delete(url, { headers });
   }
   
-
   updateCartItem(item: CartItem): Observable<any> {
     const url = `${this.apiUrl}/cart?itemId=${item.itemId}&userId=${item.userId}`;
     const headers = new HttpHeaders()

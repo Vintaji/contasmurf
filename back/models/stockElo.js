@@ -26,6 +26,9 @@ const StockEloSchema = new mongoose.Schema({
   divisao: {
     type: String,
   },
+  preco: {
+    type: Number,
+  },
   imagem: {
     type: String,
   },

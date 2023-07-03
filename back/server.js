@@ -115,8 +115,18 @@ app.get("/api/stockPBE", verifyToken, async (req, res) => {
 });
 
 app.post("/api/stockElo", verifyToken, async (req, res) => {
-  const { login, senha, ea, skins, nivel, servidor, elo, divisao, imagem } =
-    req.body;
+  const {
+    login,
+    senha,
+    ea,
+    skins,
+    nivel,
+    servidor,
+    elo,
+    divisao,
+    imagem,
+    preco,
+  } = req.body;
   // Verificar se o conta já existe no banco de dados
   const existingStockElo = await StockElo.findOne({
     $or: [{ login }],
@@ -135,6 +145,7 @@ app.post("/api/stockElo", verifyToken, async (req, res) => {
     elo,
     divisao,
     imagem,
+    preco,
   });
   await newStockElo.save();
 

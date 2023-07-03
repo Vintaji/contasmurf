@@ -1,7 +1,8 @@
 <app-menu-dashboard></app-menu-dashboard>
 <div class="h-screen min-h-full">
   <div class="flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-6 pb-6">Estoque PBE</h1>
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 text-center pt-6">Estoque PBE</h1>
+    <h1 class="text-gray-900 text-center pb-8">Esse estoque poussui {{ stockPBE.length }} Contas</h1>
     <div class="pb-6">
       <label class="text-sm font-semibold">Insira o payload das contas PBE:</label>
       <textarea [(ngModel)]="textoInput" name="contas" required

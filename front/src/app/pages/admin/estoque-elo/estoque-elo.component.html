@@ -1,7 +1,8 @@
 <app-menu-dashboard></app-menu-dashboard>
 <div class="h-screen min-h-full">
   <div class="flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900 text-center py-6 pb-6">Estoque Elo</h1>
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 text-center pt-6">Estoque ELO</h1>
+    <h1 class="text-gray-900 text-center pb-8">Esse estoque poussui {{ stockElo.length }} Contas</h1>
     <button class="bg-[#D75433] text-white px-2 py-1 rounded" (click)="openPopup()">
       Adicionar Estoque
     </button>    
@@ -17,6 +18,7 @@
               <th class="px-8 py-2">Elo</th>
               <th class="px-8 py-2">Divisão</th>
               <th class="px-8 py-2">Skins</th>
+              <th class="px-8 py-2">Preço</th>
               <th class="px-8 py-2">Servidor</th>
             </tr>
           </thead>
@@ -30,6 +32,7 @@
                 <td class="px-8 py-2">{{ stockItem['elo'] }}</td>
                 <td class="px-8 py-2">{{ stockItem['divisao'] === ' ' ? 'Sem divisão' : stockItem['divisao'] }}</td>
                 <td class="px-8 py-2">{{ stockItem['skins'] }}</td>
+                <td class="px-8 py-2">{{ "R$ " + stockItem['preco'] }}</td>
                 <td class="px-8 py-2">{{ stockItem['servidor'] }}</td>
                 <td class="px-8 py-2">
                   <button (click)="removeStockElo(i, stockItem._id)" class="text-red-600 hover:text-red-800">

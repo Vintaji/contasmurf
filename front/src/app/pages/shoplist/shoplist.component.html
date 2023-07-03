@@ -1,15 +1,57 @@
 <div class="w-full bg-gray-100">
 <!-- Title -->
-<div class="pt-12 bg-gray-100">
-<h1 class="text-center text-2xl font-bold text-gray-800 pb-5">Contas</h1>
+<div class="pt-20 bg-gray-100">
+<h1 class="text-center text-2xl font-bold text-gray-800">Contas</h1>
 </div>
 
 <!-- Tab Menu -->
-<div class="flex flex-wrap items-center overflow-x-auto overflow-y-hidden py-10 justify-center text-gray-800">
-	<a rel="noopener noreferrer" href="#" class="flex items-center flex-shrink-0 px-5 py-3 space-x-2text-gray-600">
-		<span>Elo</span>
-	</a>
+<div class="flex items-center overflow-x-auto overflow-y-hidden py-6 justify-center text-gray-800">
+  <div class="flex items-center space-x-4 text-center">
+    <div class="form-group">
+      <label class="text-gray-800 text-center" for="elo">Liga</label> <br><br>
+      <select name="elo" id="elo" class="custom-select form-round bg-gray-100" [(ngModel)]="selectedElo">
+        <option class="text-center text-sm" value="">Todos</option>
+        <option class="text-center text-sm" value="ferro">Ferro</option>
+        <option class="text-center text-sm" value="bronze">Bronze</option>
+        <option class="text-center text-sm" value="prata">Prata</option>
+        <option class="text-center text-sm" value="ouro">Ouro</option>
+        <option class="text-center text-sm" value="platina">Platina</option>
+        <option class="text-center text-sm" value="diamante">Diamante</option>
+        <option class="text-center text-sm" value="mestre">Mestre</option>
+        <option class="text-center text-sm" value="graomestre">Grão-Mestre</option>
+        <option class="text-center text-sm" value="desafiante">Desafiante</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="text-gray-800 text-center" for="divisao">Divisão</label> <br><br>
+      <select name="divisao" id="divisao" class="custom-select form-round bg-gray-100" [(ngModel)]="selectedDivisao">
+        <option class="text-center text-sm" value="">Todos</option>
+        <option class="text-center text-sm" value="1">1</option>
+        <option class="text-center text-sm" value="2">2</option>
+        <option class="text-center text-sm" value="3">3</option>
+        <option class="text-center text-sm" value="4">4</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="text-gray-800 text-center" for="ordenacao">Preço</label> <br><br>
+      <select name="ordenacao" id="ordenacao" class="custom-select form-round bg-gray-100" [(ngModel)]="selectedOrdenacao">
+        <option class="text-center text-sm" value="">Sem filtro</option>
+        <option class="text-center text-sm" value="ascendente">Menor preço</option>
+        <option class="text-center text-sm" value="descendente">Maior preço</option>
+      </select>
+    </div>
+  </div>
 </div>
+
+
+<div class="flex justify-center pb-16">
+  <button (click)="filtrarStock()" class="text-sm space-x-1.5 rounded-lg bg-[#D75433] px-4 py-1.5 text-white">
+    Filtrar
+  </button>
+</div>
+
 <!-- Product List -->
 <div>
   <div class="mx-auto grid max-w-6xl grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-20">
@@ -100,7 +142,7 @@
           </div>
         </a>
       </article>
-      <div *ngFor="let stockItem of stockElo | paginate: { itemsPerPage: itemsPerPageElo, currentPage: currentPageElo }; let i = index">
+      <div *ngFor="let stockItem of filteredStockElo && filteredStockDivisao | paginate: { itemsPerPage: itemsPerPageElo, currentPage: currentPageElo }; let i = index">
         <article class="rounded-xl bg-white p-3 shadow-lg">
           <a href="#">
             <div class="flex items-end overflow-hidden rounded-xl">
@@ -112,7 +154,7 @@
               <p class="mt-1 text-sm text-slate-400">ENTREGA AUTOMÁTICA</p>
       
               <div class="mt-3 flex items-end justify-between">
-                <p class="text-lg font-bold text-black">{{ "R$ 10" }}</p>
+                <p class="text-lg font-bold text-black">{{ "R$ " + stockItem.preco }}</p>
       
                 <div class="flex items-center space-x-1.5 rounded-lg bg-[#D75433] px-4 py-1.5 text-white">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
@@ -124,7 +166,7 @@
             </div>
           </a>
         </article>
-      </div>
+      </div>      
       
     </div>
  </div>
