@@ -406,30 +406,19 @@ app.post("/api/cart", verifyToken, async (req, res) => {
 
 app.get("/api/cart", verifyToken, async (req, res) => {
   const userId = req.query.userId;
-  const itemId = req.query.itemId;
 
   try {
-    let cartQuery = { userId: userId };
-    if (itemId) {
-      cartQuery._id = itemId;
-    }
-
-    const cart = await Cart.findOne(cartQuery);
-    if (!cart) {
-      res.status(404).json({ message: "Esse itemId não foi encontrado" });
+    const cart = await Cart.find({ userId: userId });
+    if (!cart || cart.length === 0) {
+      res
+        .status(404)
+        .json({ message: "O carrinho não foi encontrado para esse userId" });
       return;
     }
 
-    const response = {
-      itemId: cart._id,
-      ...cart.toObject(),
-    };
-
-    res.status(200).json(response);
+    res.status(200).json(cart); // Retorna todos os objetos do carrinho para o userId fornecido
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Ocorreu um erro ao obter os itens do carrinho" });
+    res.status(500).json({ error: "Ocorreu um erro ao obter o carrinho" });
   }
 });
 

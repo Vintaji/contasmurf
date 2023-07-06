@@ -21,6 +21,7 @@ export class ContentComponent {
     this.apiService.addToCart(item).subscribe(
       (response: any) => {
         console.log('Item adicionado ao carrinho:', response);
+        window.location.reload();
       },
       (error: any) => {
         console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
@@ -32,13 +33,14 @@ export class ContentComponent {
       userId: localStorage.getItem('userId') || '',
       name: 'Conta PBE',
       itemId: '', // O campo itemId será preenchido pelo serviço ApiService
-      price: 50,
+      price: 20,
       quantity: 1
     };
   
     this.apiService.addToCart(item).subscribe(
       (response: any) => {
         console.log('Item adicionado ao carrinho:', response);
+        window.location.reload();
       },
       (error: any) => {
         console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
@@ -58,6 +60,7 @@ export class ContentComponent {
     this.apiService.addToCart(item).subscribe(
       (response: any) => {
         console.log('Item adicionado ao carrinho:', response);
+        window.location.reload();
       },
       (error: any) => {
         console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);

@@ -128,3 +128,4 @@ export class CartComponent implements OnInit {
     // Lógica para finalizar a compra
   }
 }
+

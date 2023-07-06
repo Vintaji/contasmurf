@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shoplist',
@@ -16,7 +17,8 @@ export class ShoplistComponent implements OnInit {
   selectedDivisao: string = '';  // Elo selecionado para filtro
   selectedOrdenacao: string = '';  // Ordenação selecionada
 
-  constructor(private apiService: ApiService) {}
+
+  constructor(private apiService: ApiService, private router: Router) {}
 
   filtrarStockElo(): void {
     if (this.selectedElo) {
@@ -62,6 +64,89 @@ export class ShoplistComponent implements OnInit {
     }
   }
 
+  adicionarAoCarrinho() {
+    const item = {
+      userId: localStorage.getItem('userId') || '',
+      name: 'Conta Unraked',
+      itemId: '', // O campo itemId será preenchido pelo serviço ApiService
+      price: 10,
+      quantity: 1
+    };
+
+    this.apiService.addToCart(item).subscribe(
+      (response: any) => {
+        console.log('Item adicionado ao carrinho:', response);
+        this.router.navigate(['/cart']);
+        window.location.reload();
+      },
+      (error: any) => {
+        console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
+      }
+    );
+  }
+  adicionarAoCarrinhoPBE() {
+    const item = {
+      userId: localStorage.getItem('userId') || '',
+      name: 'Conta PBE',
+      itemId: '', // O campo itemId será preenchido pelo serviço ApiService
+      price: 20,
+      quantity: 1
+    };
+  
+    this.apiService.addToCart(item).subscribe(
+      (response: any) => {
+        console.log('Item adicionado ao carrinho:', response);
+        this.router.navigate(['/cart']);
+        window.location.reload();
+      },
+      (error: any) => {
+        console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
+      }
+    );
+  }
+  
+  adicionarAoCarrinhoAssinatura() {
+    const item = {
+      userId: localStorage.getItem('userId') || '',
+      name: 'Assinatura',
+      itemId: '', // O campo itemId será preenchido pelo serviço ApiService
+      price: 50,
+      quantity: 1
+    };
+  
+    this.apiService.addToCart(item).subscribe(
+      (response: any) => {
+        console.log('Item adicionado ao carrinho:', response);
+        this.router.navigate(['/cart']);
+        window.location.reload();
+      },
+      (error: any) => {
+        console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
+      }
+    );
+  }
+
+  adicionarAoCarrinhoElo(item: any) {
+    const itemToAddToCart = {
+      userId: localStorage.getItem('userId') || '',
+      name: item.elo + ' ' + item.divisao, // Usando o campo elo como nome
+      itemId: '', // O campo itemId será preenchido pelo serviço ApiService
+      price: item.preco, // Usando o campo preco como price
+      quantity: 1
+    };
+  
+    this.apiService.addToCart(itemToAddToCart).subscribe(
+      (response: any) => {
+        console.log('Item adicionado ao carrinho:', response);
+        this.router.navigate(['/cart']);
+        window.location.reload();
+      },
+      (error: any) => {
+        console.log('Ocorreu um erro ao adicionar o item ao carrinho:', error);
+      }
+    );
+  }  
+  
   ngOnInit(): void {
     // Fetch stock data from ApiService
     this.apiService.getStockElo().subscribe((data: any[]) => {
