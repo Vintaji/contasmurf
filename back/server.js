@@ -23,7 +23,7 @@ const Stock = require("./models/stock");
 const StockElo = require("./models/stockElo");
 const StockPBE = require("./models/stockPBE");
 
-// Rota de registro de Estoque
+// Rota de registro de Estoque Unraked
 app.post("/api/stock", verifyToken, async (req, res) => {
   const { login, senha, ea, skins, nivel, servidor } = req.body;
   // Verificar se o conta já existe no banco de dados
@@ -40,7 +40,6 @@ app.post("/api/stock", verifyToken, async (req, res) => {
   res.json({ message: "Estoque adicionado com sucesso" });
 });
 
-// Rota de exclusão de Estoque
 app.delete("/api/stock", verifyToken, async (req, res) => {
   const stockId = req.query.stockId;
 
@@ -61,12 +60,13 @@ app.delete("/api/stock", verifyToken, async (req, res) => {
   }
 });
 
-// Rota de autenticação de usuário
 app.get("/api/stock", verifyToken, async (req, res) => {
   const listStock = await Stock.find();
   res.send(listStock);
 });
+// Fim Estoque Unraked
 
+// Rota de registro de Estoque PBE
 app.post("/api/stockPBE", verifyToken, async (req, res) => {
   const { servidor, login, senha } = req.body;
   // Verificar se o conta já existe no banco de dados
@@ -87,7 +87,6 @@ app.post("/api/stockPBE", verifyToken, async (req, res) => {
   res.json({ message: "Estoque adicionado com sucesso" });
 });
 
-// Rota de exclusão de Estoque
 app.delete("/api/stockPBE", verifyToken, async (req, res) => {
   const stockId = req.query.stockId;
 
@@ -108,12 +107,13 @@ app.delete("/api/stockPBE", verifyToken, async (req, res) => {
   }
 });
 
-// Rota de autenticação de usuário
 app.get("/api/stockPBE", verifyToken, async (req, res) => {
   const listStockPBE = await StockPBE.find();
   res.send(listStockPBE);
 });
+// Fim Estoque PBE
 
+// Rota de registro de Estoque Elo
 app.post("/api/stockElo", verifyToken, async (req, res) => {
   const {
     login,
@@ -172,13 +172,13 @@ app.delete("/api/stockElo", verifyToken, async (req, res) => {
   }
 });
 
-// Rota de autenticação de usuário
-app.get("/api/stockElo", verifyToken, async (req, res) => {
+app.get("/api/stockElo", async (req, res) => {
   const listStockElo = await StockElo.find();
   res.send(listStockElo);
 });
+// Fim Estoque Elo
 
-// Rota de registro de usuário
+// Rota de Autenticação de usuário
 app.post("/api/register", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -202,7 +202,6 @@ app.post("/api/register", async (req, res) => {
   res.json({ message: "Usuário registrado com sucesso" });
 });
 
-// Rota de autenticação de usuário
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -230,12 +229,13 @@ app.post("/api/login", async (req, res) => {
   res.json({ userId: user._id, token: generateToken(user) });
 });
 
-// Rota de listagem de usuários
 app.get("/api/accounts", verifyToken, async (req, res) => {
   const listAcoounts = await User.find();
   res.send(listAcoounts);
 });
+// Fim Rota Autenticação de usuário
 
+// Rota de recuperação de nickname
 app.post("/api/recuperarnome", verifyToken, (req, res) => {
   const { to, from, subject, text } = req.body;
 
@@ -259,7 +259,9 @@ app.post("/api/recuperarnome", verifyToken, (req, res) => {
       res.status(500).json({ error: "Erro ao enviar o e-mail" });
     });
 });
+// Fim Rota de recuperação de nickname
 
+// Rota de recuperação de senha
 app.post("/api/recuperarsenha", (req, res) => {
   const { email } = req.body;
 
@@ -374,8 +376,9 @@ app.post("/api/redefinirsenha", (req, res) => {
     return res.status(401).json({ error: "Token inválido ou expirado" });
   }
 });
+// Fim Rota de recuperação de senha
 
-// Rota para adicionar um item ao carrinho
+// Rota de carrinho
 app.post("/api/cart", verifyToken, async (req, res) => {
   const { userId, quantity, price, name } = req.body;
 
@@ -486,6 +489,7 @@ app.get("/api/cartlist", verifyToken, async (req, res) => {
       .json({ error: "Ocorreu um erro ao obter a lista do carrinho" });
   }
 });
+// Fim Rota de carrinho
 
 // Iniciar o servidor
 app.listen(3000, () => {

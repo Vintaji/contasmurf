@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +11,11 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api';
   private tokenKey = 'token';
+  private jwtHelper: JwtHelperService;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.jwtHelper = new JwtHelperService();
+  }
 
   isLoggedIn(): boolean {
     const token = this.getToken();
@@ -29,6 +34,20 @@ export class AuthService {
         this.setToken(token);
       })
     );
+  }
+
+  logoutIfTokenExpired(): void {
+    const token = localStorage.getItem('token');
+    if (token && this.jwtHelper.isTokenExpired(token)) {
+      // Token expirado, realizar logout
+      this.logout();
+    }
+  }
+
+  logout(): void {
+    // Limpar token e redirecionar para a página de login
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
   setToken(token: string): void {
