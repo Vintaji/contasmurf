@@ -27,6 +27,7 @@ import { EstoqueUnrakedComponent } from './pages/admin/estoque-unraked/estoque-u
 import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
 import { MenuDashboardComponent } from './pages/admin/menu-dashboard/menu-dashboard.component';
 import { EstoquePbeComponent } from './pages/admin/estoque-pbe/estoque-pbe.component';
+import { ConstrucaoComponent } from './pages/construcao/construcao.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { EstoquePbeComponent } from './pages/admin/estoque-pbe/estoque-pbe.compo
     EstoqueUnrakedComponent,
     EstoqueEloComponent,
     MenuDashboardComponent,
-    EstoquePbeComponent
+    EstoquePbeComponent,
+    ConstrucaoComponent
   ],
   imports: [
     BrowserModule,

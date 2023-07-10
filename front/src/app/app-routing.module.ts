@@ -14,11 +14,16 @@ import { RedefinirsenhaComponent } from './pages/redefinirsenha/redefinirsenha.c
 import { ShoplistComponent } from './pages/shoplist/shoplist.component';
 import { EstoqueEloComponent } from './pages/admin/estoque-elo/estoque-elo.component';
 import { EstoquePbeComponent } from './pages/admin/estoque-pbe/estoque-pbe.component';
+import { ConstrucaoComponent } from './pages/construcao/construcao.component';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: HomeComponent
+  // },
   {
     path: '',
-    component: HomeComponent
+    component: ConstrucaoComponent
   },
   {
     path: 'login',
